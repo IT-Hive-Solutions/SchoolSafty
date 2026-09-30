@@ -1,0 +1,68 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthResponse {
+  superAdminId: String
+  token: String!
+  userId: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  approveRequest(id: String!): Tenant!
+  registerSchool(input: RegisterSchoolInput!): RegistrationRequest!
+  rejectRequest(id: String!): RegistrationRequest!
+  superAdminLogin(input: LoginInput!): AuthResponse!
+  tenantLogin(input: TenantLoginInput!): AuthResponse!
+}
+
+type Query {
+  pendingRequests: [RegistrationRequest!]!
+  schools: [Tenant!]!
+}
+
+input RegisterSchoolInput {
+  executiveEmail: String!
+  executiveName: String!
+  schoolName: String!
+}
+
+type RegistrationRequest {
+  createdAt: DateTime!
+  executiveEmail: String!
+  executiveName: String!
+  id: ID!
+  schoolName: String!
+  status: RegistrationStatus!
+  updatedAt: DateTime!
+}
+
+enum RegistrationStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+type Tenant {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  schemaName: String!
+  updatedAt: DateTime!
+}
+
+input TenantLoginInput {
+  email: String!
+  password: String!
+  tenantId: String!
+}
