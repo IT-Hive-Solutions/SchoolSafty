@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export enum UserRole {
-  SCHOOL_ADMIN = 'SCHOOL_ADMIN',
-  TEACHER = 'TEACHER',
-  STUDENT = 'STUDENT',
+  TENANT_ADMIN = 'TENANT_ADMIN',
+  STAFF = 'STAFF',
+  USER = 'USER',
 }
 
 // Notice we do NOT define 'schema' here, as it will be dynamic
@@ -24,7 +24,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.STUDENT,
+    default: UserRole.USER,
   })
   role: UserRole;
 

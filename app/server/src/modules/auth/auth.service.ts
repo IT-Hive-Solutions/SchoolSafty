@@ -3,8 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { SuperAdmin } from '../../database/entities/global/super-admin.entity.js';
-import { Tenant } from '../../database/entities/global/tenant.entity.js';
+import { SuperAdmin } from './entities/super-admin.entity.js';
+import { Tenant } from '../tenant/entities/tenant.entity.js';
 import { LoginInput, TenantLoginInput, AuthResponse } from './dto/login.input.js';
 
 @Injectable()
@@ -17,16 +17,16 @@ export class AuthService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const existingAdmin = await this.superAdminRepo.findOne({ where: { email: 'admin@schoolsafety.com' } });
+    const existingAdmin = await this.superAdminRepo.findOne({ where: { email: 'admin@organizationsafety.com' } });
     if (!existingAdmin) {
       const passwordHash = await bcrypt.hash('admin123', 10);
       const admin = this.superAdminRepo.create({
         name: 'Default Admin',
-        email: 'admin@schoolsafety.com',
+        email: 'admin@organizationsafety.com',
         passwordHash,
       });
       await this.superAdminRepo.save(admin);
-      console.log('Seeded default super admin: admin@schoolsafety.com / admin123');
+      console.log('Seeded default super admin: admin@organizationsafety.com / admin123');
     }
   }
 
@@ -46,7 +46,7 @@ export class AuthService implements OnModuleInit {
   async tenantLogin(input: TenantLoginInput): Promise<AuthResponse> {
     // 1. Verify tenant exists
     const tenant = await this.dataSource.getRepository(Tenant).findOne({ where: { id: input.tenantId } });
-    if (!tenant) throw new UnauthorizedException('School not found');
+    if (!tenant) throw new UnauthorizedException('Organization not found');
 
     // 2. Query user in tenant's schema
     const queryRunner = this.dataSource.createQueryRunner();
@@ -77,7 +77,7 @@ export class AuthService implements OnModuleInit {
         role: user.role,
         tenantId: tenant.id,
         schemaName: tenant.schemaName,
-        schoolName: tenant.name, // Include name so the frontend can read it without a DB hit
+        organizationName: tenant.name, // Include name so the frontend can read it without a DB hit
       };
       
       const token = await this.jwtService.signAsync(payload);

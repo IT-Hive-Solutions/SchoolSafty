@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SuperAdmin } from '../../database/entities/global/super-admin.entity.js';
+import { SuperAdmin } from './entities/super-admin.entity.js';
 import { AuthResolver } from './auth.resolver.js';
 import { AuthService } from './auth.service.js';
 

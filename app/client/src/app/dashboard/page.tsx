@@ -37,7 +37,7 @@ export default async function DashboardPage() {
       <div className="max-w-6xl mx-auto">
         <header className="mb-8 border-b border-gray-200 pb-6 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-black">{payload.schoolName}</h1>
+            <h1 className="text-3xl font-bold text-black">{payload.organizationName || payload.schoolName}</h1>
             <p className="text-gray-600 mt-1">Tenant Dashboard</p>
           </div>
           <div className="flex items-center gap-4">
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
         </header>
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Welcome to your school portal!</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Welcome to your organization portal!</h2>
           <p className="text-gray-600">
             You are logged into the isolated database schema: <code className="bg-gray-100 px-2 py-1 rounded text-pink-600">{payload.schemaName}</code>
           </p>

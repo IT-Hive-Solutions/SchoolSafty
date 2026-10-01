@@ -1,5 +1,5 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { Tenant } from '../../database/entities/global/tenant.entity.js';
+import { Tenant } from './entities/tenant.entity.js';
 import { TenantService } from './tenant.service.js';
 
 @Resolver(() => Tenant)
@@ -7,7 +7,7 @@ export class TenantResolver {
   constructor(private readonly tenantService: TenantService) {}
 
   @Query(() => [Tenant])
-  async schools() {
+  async organizations() {
     return this.tenantService.getAllTenants();
   }
 }

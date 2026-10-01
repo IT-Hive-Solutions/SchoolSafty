@@ -10,6 +10,7 @@ import { getDatabaseConfig } from './config/database.config.js';
 import { OnboardingModule } from './modules/onboarding/onboarding.module.js';
 import { AuthModule } from './modules/auth/auth.module.js';
 import { TenantModule } from './modules/tenant/tenant.module.js';
+import { MailModule } from './modules/mail/mail.module.js';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TenantModule } from './modules/tenant/tenant.module.js';
     OnboardingModule,
     AuthModule,
     TenantModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

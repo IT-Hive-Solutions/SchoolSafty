@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-type School = {
+type Organization = {
   id: string;
   name: string;
 };
 
 export default function LoginPage() {
-  const [schools, setSchools] = useState<School[]>([]);
-  const [schoolId, setSchoolId] = useState('');
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [organizationId, setOrganizationId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,19 +18,19 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Fetch available schools for the dropdown
-    const fetchSchools = async () => {
+    // Fetch available organizations for the dropdown
+    const fetchOrganizations = async () => {
       try {
-        const res = await fetch('/api/schools');
+        const res = await fetch('/api/organizations');
         if (res.ok) {
           const data = await res.json();
-          setSchools(data);
+          setOrganizations(data);
         }
       } catch (err) {
-        console.error('Failed to load schools', err);
+        console.error('Failed to load organizations', err);
       }
     };
-    fetchSchools();
+    fetchOrganizations();
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -38,8 +38,8 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
 
-    if (!schoolId) {
-      setError('Please select your school');
+    if (!organizationId) {
+      setError('Please select your organization');
       setLoading(false);
       return;
     }
@@ -48,7 +48,7 @@ export default function LoginPage() {
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tenantId: schoolId, email, password }),
+        body: JSON.stringify({ tenantId: organizationId, email, password }),
       });
 
       if (!res.ok) {
@@ -67,7 +67,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="w-full max-w-md p-8 border border-gray-200 bg-white rounded-lg shadow-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-black">School Portal Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-black">Organization Portal Login</h2>
         
         {error && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded text-sm text-center">
@@ -77,18 +77,18 @@ export default function LoginPage() {
 
         <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div className="flex flex-col gap-1">
-            <label htmlFor="school" className="text-sm font-medium text-gray-700">Select School</label>
+            <label htmlFor="organization" className="text-sm font-medium text-gray-700">Select Organization</label>
             <select
-              id="school"
-              value={schoolId}
-              onChange={(e) => setSchoolId(e.target.value)}
+              id="organization"
+              value={organizationId}
+              onChange={(e) => setOrganizationId(e.target.value)}
               required
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black text-black bg-white"
             >
-              <option value="" disabled>-- Select your school --</option>
-              {schools.map((school) => (
-                <option key={school.id} value={school.id}>
-                  {school.name}
+              <option value="" disabled>-- Select your organization --</option>
+              {organizations.map((org) => (
+                <option key={org.id} value={org.id}>
+                  {org.name}
                 </option>
               ))}
             </select>
